@@ -1,0 +1,53 @@
+{% extends 'shopping/base.html' %}
+{% block content %}
+<!-- Header-->
+<header class="bg-white py-5">
+    <div class="container px-4 px-lg-2 my-1">
+        <div class="text-center text-black">
+            <h1 class="display-4 fw-bolder"><strong>MY PAGE</strong></h1>
+            <p class="lead fw-normal text-black-50 mb-0">{{ user.username }}님의 MY PAGE</p>
+        </div>
+    </div>
+</header>
+<section class="margin-for-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2><i class="fa-solid fa-user"></i><strong> 회원 정보</strong></h2>
+                        <p><strong>Username</strong>: {{user.username}}<br>
+                            {% if user.email %}
+                            <strong>E-mail</strong>: {{user.email}} </p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h2><i class="fa-solid fa-comment"></i><strong> 작성한 댓글</strong></h2>
+                        {% for comment in user.comment_set.all %}
+                        <a href="{{comment.get_absolute_url}}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <small
+                                            class="text-muted">
+                                        등록: {{ comment.created_at|date:"Y-m-d h:m" }}
+                                        {% if comment.created_at != comment.modified_at %}
+                                        수정: {{comment.modified_at|date:"Y-m-d h:m"}}
+                                        {% endif %}</small>
+                                    {{ comment.content | linebreaks }}
+                                </div>
+
+                            </div>
+
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

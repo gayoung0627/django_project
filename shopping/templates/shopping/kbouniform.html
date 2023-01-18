@@ -1,0 +1,181 @@
+{% extends 'shopping/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Header-->
+<header class="bg-white py-5">
+    <div class="container px-4 px-lg-2 my-1">
+        <div class="text-center text-black">
+            <h1 class="display-4 fw-bolder"><strong>KBO UNIFORM</strong></h1>
+             <p class="lead fw-normal text-black-50 mb-0">KBO UNIFORM 회사 소개 페이지</p>
+        </div>
+    </div>
+</header>
+
+<section class="margin-for-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2>ABOUT KBO UNIFORM</h2>
+                <p><strong>KBO UNIFORM</strong>에서는 KBO 프로야구 10개 구단의 유니폼을 한 번에 만나볼 수 있습니다. </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="card" data-toggle="modal" data-target="#portfolio1">
+                    <img class="card-img-top" src="{% static 'shopping/image/uni.png' %}">
+                    <div class="card-body">
+                        <h5>KBO 구단</h5>
+                        <p>KBO 소속 10개 구단</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" data-toggle="modal" data-target="#portfolio2">
+                    <img class="card-img-top" src="{% static 'shopping/image/KBOUNI.png' %}">
+                    <div class="card-body">
+                        <h5>KBO UNIFORM에 등록된 유니폼</h5>
+                        <p>KBO UNIFORM에 등록된 카데고리별 유니폼 비율을 확인해보세요</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card" data-toggle="modal" data-target="#portfolio3">
+                    <div class="card-img-top" id="mychart1"></div>
+                    <div class="card-body">
+                        <h5>KBO 역대 관중 현황</h5>
+                        <p>KBO 역대 관중 현황입니다</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <script>
+      google.charts.load('current',{'packages':['line']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart(){
+        var data = google.visualization.arrayToDataTable([
+          ['Year', '평균 관중 수'],
+          ['2018', 11214],
+          ['2019', 10119],
+          ['2020', 456],
+          ['2021', 1706]
+        ]);
+        var options = {
+          chart: {
+            title: 'KBO 역대 평균 관중 현황',
+            subtitle: ' 2018-2021',
+          }
+        };
+        var chart = new google.charts.Line(document.getElementById('mychart1'));
+        chart.draw(data, google.charts.Line.convertOptions(options));
+      };
+
+      google.charts.load('current',{'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart2);
+
+      function drawChart2(){
+        var data = google.visualization.arrayToDataTable([
+          ['Category', 'item number'],
+          ['패션 유니폼', 3],
+          ['어센틱 유니폼', 12],
+          ['레플리카 유니폼', 4],
+          ['미분류', 1],
+        ]);
+        var options = {
+          chart: {
+            title: '현재 등록된 카테고리별 유니폼 수',
+          }
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('mychart2'));
+        chart.draw(data, options);
+      };
+
+    </script>
+
+    <!-- Modal -->
+      <div class="modal fade" id="portfolio1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">KBO 구단</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-6">
+                  <img class="card-img-top" src="{% static 'shopping/image/uni.png' %}">
+                </div>
+                <div class="col-6">
+                  <h5>KBO 소속 10개 구단</h5>
+                  <p>SSG 랜더스, 키움 히어로즈, LG 트윈스, KT 위즈,
+                      KIA 타이거즈, NC 다이노스, 삼성 라이온즈, 롯데 자이언츠, 두산베어스, 한화이글스</p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Modal -->
+      <div class="modal fade" id="portfolio2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel2">카테고리별 유니폼 상품 등록 비율</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="card-img-top" id="mychart2"></div>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- Modal -->
+      <div class="modal fade" id="portfolio3" tabindex="-1" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel3">KBO 역대 관중 현황</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                  <div class="col-12">
+                    <h5>KBO 역대 관중현황</h5>
+                    <table class="table table-boundary table-striped">
+                        <tr><th>연도</th><th>2018</th><th>2019</th><th>2020</th><th>2021</th></tr>
+                        <tr><th>삼성</th><td>752,310</td><td>691,681</td><td>27,819</td><td>278,222</td></tr>
+                        <tr><th>KIA</th><td>861,729</td><td>692,163</td><td>21,198</td><td>104,989</td></tr>
+                        <tr><th>롯데</th><td>901,634</td><td>672,208</td><td>36,717</td><td>138,294</td></tr>
+                        <tr><th>LG</th><td>1,108,677</td><td>1,000,400</td><td>41,317</td><td>116,691</td></tr>
+                        <tr><th>두산</th><td>1,112,066</td><td>983,474</td><td>55,047</td><td>98,036</td></tr>
+                        <tr><th>한화</th><td>734,110</td><td>555,225</td><td>19,962</td><td>103,960</td></tr>
+                        <tr><th>SSG</th><td>1,037,211</td><td>982,962</td><td>30,608</td><td>118,412</td></tr>
+                        <tr><th>키움</th><td>454,754</td><td>453,886</td><td>27,158</td><td>67,407</td></tr>
+                        <tr><th>NC</th><td>442,872</td><td>710,274</td><td>45,992</td><td>128,289</td></tr>
+                        <tr><th>KT</th><td>668,559</td><td>536,735</td><td>22,499</td><td>74,189</td></tr>
+                    </table>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

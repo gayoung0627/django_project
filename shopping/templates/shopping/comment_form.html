@@ -1,0 +1,14 @@
+{% extends 'shopping/base.html' %}
+{% load crispy_forms_tags %}
+{% block head_title %}
+    댓글 수정하기
+{% endblock %}
+{% block main_area %}
+    <h1>댓글 수정하기</h1>
+    <hr/>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+            {{form| crispy}}
+        <button type = "submit" class="btn btn-primary float-right">등록</button>
+    </form>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% load static %}
+{% load socialaccount %}
+<nav>
+      <a href="/">
+      <img src="{% static 'shopping/image/logo-kbouni.png' %}" width="30%">
+        </a>
+      <ul>
+          <li><a href="/">홈</a></li>
+          <li><a href="/kbouniform">KBOUNIFORM</a></li>
+          <li><a href="/product_list">상품</a></li>
+          {% if user.is_authenticated%}
+          <li><a href="/mypage">MY 페이지</a></li>
+          <li><a href="/accounts/logout/">로그아웃</a></li>
+          <li><a href="/mypage">
+              {% if user.socialaccount_set.all.0.get_avatar_url %}
+                <img class="rounded-circle mr-3" src="{{ user.socialaccount_set.all.0.get_avatar_url }}" width="25px"/>
+                {% else %}
+                <img class="rounded-circle mr-3" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" width="25px"/>
+                {% endif %}
+                <strong>{{ user.username }}님</strong>
+          {% else %}
+          </a></li>
+          <li><a href="/accounts/login/" data-toggle="modal" data-target="#loginModal">로그인</a></li>
+          {% endif %}
+      </ul>
+    </nav>
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    <i class="fa-solid fa-right-to-bracket"></i> LogIn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
+                <span aria-hidden="true">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'google' %}">
+                            <i class="fa-brands fa-google"></i> Login with Google
+                        </a>
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="{% provider_login_url 'kakao' method='oauth2' %}">
+                            <i class="fa-solid fa-user"></i> Login with Kakao
+                        </a>
+
+                    </div>
+                    <div class="col-6">
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/login/">
+                            <i class="fa-regular fa-envelope"></i> Login with Email</a>
+                        <a role="button" class="btn btn-outline-dark btn-block btn-sm" href="/accounts/signup/">
+                            <i class="fa-regular fa-envelope"></i> SignUp with Email</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,121 @@
+{% extends 'shopping/base.html' %}
+{% load static %}
+{% block content %}
+<!-- Page header with logo and tagline-->
+<!-- Header-->
+<header class="bg-white py-5">
+    <div class="container px-4 px-lg-2 my-1">
+        <div class="text-center text-black">
+            <h1 class="display-4 fw-bolder"><strong>{% if category %} {{ category }} {% endif %}
+                {% if manufacturer %} 제조사 {{ manufacturer }} {% endif %}
+                {% if search_info %} {{ search_info }} 검색 결과 {% endif %}
+                {% if tag %} <i class="fas fa-tag"></i> {{ tag }} {% endif %} 상품 리스트
+
+            </strong></h1>
+            <p class="lead fw-normal text-black-50 mb-0">다양한 유니폼을 만나보세요</p>
+        </div>
+    </div>
+    <div>
+        {% for category in categories %}
+        <ul class="list-group list-group-horizontal justify-content-center">
+            <li class="list-group-item">
+                <a class="nav-link" href="{{ category.get_absolute_url }}">{{ category }}
+                    ({{ category.product_set.count }})</a></li>
+            {% endfor %}
+            <li class="list-group-item"><a class="nav-link" href="{% url 'product_list' %}category/no_category">
+                미분류({{ no_category_product_count }})</a></li>
+        </ul>
+    </div>
+    <br/>
+        <div>
+        {% for manufacturer in manufacturers %}
+        <ul class="list-group list-group-horizontal justify-content-center">
+            <li class="list-group-item">
+                <a class="nav-link" href="{{ manufacturer.get_absolute_url }}">{{ manufacturer }}
+                    ({{ manufacturer.product_set.count }})</a></li>
+            {% endfor %}
+            <li class="list-group-item"><a class="nav-link" href="{% url 'product_list' %}manufacturer/no_manufacturer">
+                미분류({{ no_manufacturer_product_count }})</a></li>
+        </ul>
+    </div>
+
+</header>
+
+<div>
+    <div class="form-inline my-2 my-lg-0 float-right">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" id="search-input">
+        <span class="input-group-btn">
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit" onclick="searchProduct();">Search</button>
+        </span>
+    </div>
+</div>
+
+<div class="py-5">
+    {% if user.is_authenticated %}
+    {% if user.is_superuser or user.is_staff %}
+    <a class="btn btn-outline-dark float-right" href="/product_list/create_product/" role="button">
+        <i class="fas fa-pen">상품 등록하기</i>
+    </a>
+    {% endif %}
+    {% endif %}
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for p in product_list %}
+            <div class="col mb-5" id="product-{{p.pk}}">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img src="{{p.product_image.url}}" class="card-img-top" alt="{{p}}의 product_image">
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        {% if p.category %}
+                        <a class="small mb-1 text-dark" href="{{p.category.get_absolute_url}}">{{ p.category }}</a>
+                        {% else %}
+                        <a class="small mb-1 text-dark" href="{% url 'product_list' %}category/no_category">미분류</a>
+                        {% endif %}
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{ p.name }}</h5>
+                            <!-- Product description-->
+                            <p class="card-text">{{ p.get_description_markdown | truncatewords_html:50 | safe }}</p>
+                            <!-- Product price-->
+                            <h5>{{ p.price }}원</h5>
+                        </div>
+                        {% if p.tags.exists %}
+                        <i class="fas fa-tag"></i>
+                        {% for tag in p.tags.iterator %}
+                        <span class="badge badge-pill badge-light"><a
+                                href="{{tag.get_absolute_url}}">{{ tag }}</a></span>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto"
+                                                    href="{{p.get_absolute_url}}">상품 상세보기</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% include 'shopping/pagination.html' %}
+</div>
+<script>
+                           function searchProduct(){
+                                let searchValue = document.getElementById('search-input').value.trim();
+                                if(searchValue.length > 1){
+                                    location.href="/product_list/search/"+searchValue+"/";
+                           }
+                                else{
+                                alert('검색어('+ searchValue +')가 너무 짧습니다')
+                                }
+                           };
+                           document.getElementById('search-input').addEventListener('keyup', function(event){
+                            if(event.key === 'Enter'){
+                                searchProduct();
+                            }
+                           });
+
+</script>
+
+{% endblock %}
