@@ -31,9 +31,7 @@
 - 댓글 등록, 수정, 삭제(본인만 가능)
 <br>
 
-## 📖 ERD
 
-![image](https://github.com/gayoung0627/django_project/assets/88507057/900c00e3-1bfd-48a3-96e5-496ed501f31e)
 
 
 
